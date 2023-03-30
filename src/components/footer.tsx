@@ -22,9 +22,7 @@ export default function Footer() {
                     <A href="/">{siteMetadata.title}</A>
                 </div>
                 <div class="mb-8 text-sm text-gray-500 dark:text-gray-400">
-                    <A href="https://github.com/timlrx/tailwind-nextjs-starter-blog">
-                        Tailwind Nextjs Theme
-                    </A>
+                    <A href="https://github.com/timlrx/tailwind-nextjs-starter-blog">Witness!</A>
                 </div>
             </div>
         </footer>

@@ -1,6 +1,6 @@
-import {Client} from "@notionhq/client";
-import {BlogPost, PostPage} from "../@types/schema";
-import {NotionToMarkdown} from "notion-to-md";
+import { Client } from "@notionhq/client";
+import { IBlogPost, IPostPage } from "~/types";
+import { NotionToMarkdown } from "notion-to-md";
 
 export default class NotionService {
     client: Client
@@ -11,7 +11,8 @@ export default class NotionService {
         this.n2m = new NotionToMarkdown({ notionClient: this.client });
     }
 
-    async getPublishedBlogPosts(): Promise<BlogPost[]> {
+    async getPublishedBlogPosts(): Promise<IBlogPost[]> {
+        console.log(process.env.NOTION_BLOG_DATABASE_ID)
         const database = process.env.NOTION_BLOG_DATABASE_ID ?? '';
         // list blog posts
         const response = await this.client.databases.query({
@@ -35,7 +36,7 @@ export default class NotionService {
         })
     }
 
-    async getSingleBlogPost(slug: string): Promise<PostPage> {
+    async getSingleBlogPost(slug: string): Promise<IPostPage> {
         let post, markdown
 
         const database = process.env.NOTION_BLOG_DATABASE_ID ?? '';
@@ -74,7 +75,7 @@ export default class NotionService {
         }
     }
 
-    private static pageToPostTransformer(page: any): BlogPost {
+    private static pageToPostTransformer(page: any): IBlogPost {
         let cover = page.cover;
         console.log(cover)
         switch (cover.type) {

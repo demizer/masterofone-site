@@ -1,20 +1,20 @@
-export type Tag = {
+export type ITag = {
     color: string
     id: string
     name: string
 }
 
-export type BlogPost = {
+export type IBlogPost = {
     id: string;
     slug: string;
     cover: string;
     title: string;
-    tags: Tag[];
+    tags: ITag[];
     description: string;
     date: string
 }
 
-export type PostPage = {
-    post: BlogPost,
+export type IPostPage = {
+    post: IBlogPost,
     markdown: string
 }
