@@ -4,14 +4,22 @@ export type ITag = {
     name: string
 }
 
+export type IType = {
+    color: string
+    id: string
+    name: string
+}
+
 export type IBlogPost = {
     id: string;
     slug: string;
-    cover: string;
+    cover?: string;
     title: string;
-    tags: ITag[];
+    tags?: ITag[];
     description: string;
-    date: string
+    date: string;
+    update: string;
+    type?: IType[];
 }
 
 export type IPostPage = {

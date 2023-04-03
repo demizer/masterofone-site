@@ -33,8 +33,12 @@ export default function Blog() {
                                     <div class="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
                                         <dl>
                                             <dt class="sr-only">Published on</dt>
+                                            <dd class="text-base font-medium leading-6 text-gray-700 dark:text-gray-600">
+                                                <time dateTime={post.date}>{dayjs(post.date).format("MMMM DD YYYY")}</time>
+                                            </dd>
+                                            <dt class="sr-only">Updated</dt>
                                             <dd class="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-                                                <time dateTime={post.date}>{dayjs().to(dayjs(post.date))}</time>
+                                                Updated <time dateTime={post.update}>{dayjs().to(dayjs(post.update))}</time>
                                             </dd>
                                         </dl>
                                         <div class="space-y-5 xl:col-span-3">
@@ -43,13 +47,13 @@ export default function Blog() {
                                                     <h2 class="text-2xl font-bold leading-8 tracking-tight">
                                                         <A
                                                             href={`/blog/${post.slug}`}
-                                                            class="text-gray-900 dark:text-gray-100"
+                                                            class="text-slate-950 dark:text-gray-100"
                                                         >
                                                             {post.title}
                                                         </A>
                                                     </h2>
-                                                    <div class="flex flex-wrap">
-                                                        {post.tags.map((tag) => (
+                                                    <div>
+                                                        {post.tags?.map((tag) => (
                                                             <Tag id={tag.id} name={tag.name} color={tag.color} />
                                                         ))}
                                                     </div>

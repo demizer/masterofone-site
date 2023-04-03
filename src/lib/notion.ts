@@ -12,16 +12,24 @@ export default class NotionService {
     }
 
     async getPublishedBlogPosts(): Promise<IBlogPost[]> {
-        console.log(process.env.NOTION_BLOG_DATABASE_ID)
         const database = process.env.NOTION_BLOG_DATABASE_ID ?? '';
         // list blog posts
         const response = await this.client.databases.query({
             database_id: database,
             filter: {
-                property: 'Published',
-                checkbox: {
-                    equals: true
-                }
+                and: [{
+                    property: 'Published',
+                    checkbox: {
+                        equals: true
+                    }
+                },
+                {
+                    property: 'Type',
+                    multi_select: {
+                        contains: 'Blog'
+                    }
+                },
+                ]
             },
             sorts: [
                 {
@@ -44,11 +52,19 @@ export default class NotionService {
         const response = await this.client.databases.query({
             database_id: database,
             filter: {
-                property: 'Slug',
-                rich_text: {
-                    equals: slug // slug
-                },
-                // add option for tags in the future
+                and: [{
+                    property: 'Slug',
+                    rich_text: {
+                        equals: slug
+                    },
+
+                }, {
+                    property: 'Type',
+                    multi_select: {
+                        contains: 'Blog'
+                    },
+
+                }]
             },
             sorts: [
                 {
@@ -77,8 +93,8 @@ export default class NotionService {
 
     private static pageToPostTransformer(page: any): IBlogPost {
         let cover = page.cover;
-        console.log(cover)
-        switch (cover.type) {
+        console.log("cover " + cover)
+        switch (cover?.type) {
             case 'file':
                 cover = page.cover.file
                 break;
@@ -89,15 +105,16 @@ export default class NotionService {
                 // Add default cover image if you want...
                 cover = ''
         }
-
         return {
             id: page.id,
             cover: cover,
             title: page.properties.Name.title[0].plain_text,
             tags: page.properties.Tags.multi_select,
             description: page.properties.Description.rich_text[0].plain_text,
-            date: page.properties.Updated.last_edited_time,
-            slug: page.properties.Slug.formula.string
+            date: page.created_time,
+            update: page.last_edited_time,
+            slug: page.properties.Slug.formula.string,
+            type: page.properties.Type?.multi_select,
         }
     }
 }
